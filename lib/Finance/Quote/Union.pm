@@ -38,7 +38,7 @@ use strict;
 use LWP::UserAgent;
 use HTTP::Request::Common;
 
-# VERSION
+our $VERSION = '1.52'; # VERSION
 
 sub methods { return (unionfunds => \&unionfunds); }
 sub labels { return (unionfunds => [qw/exchange name date isodate price method/]); }
@@ -90,13 +90,13 @@ sub unionfunds
 
 
         $info{$q[1], "exchange"} = "UNION";
-        $info{$q[1], "name"}     = $q[1];
+        $info{$q[1], "name"}     = $q[0];
         $info{$q[1], "symbol"}   = $q[1];
-        $info{$q[1], "price"}    = $q[3];
-        $info{$q[1], "last"}     = $q[3];
-	$quoter->store_date(\%info, $q[1], {eurodate => $tempdate});
+        $info{$q[1], "price"}    = $q[4];
+        $info{$q[1], "last"}     = $q[4];
+	$quoter->store_date(\%info, $q[1], {eurodate => $q[6]});
         $info{$q[1], "method"}   = "unionfunds";
-        $info{$q[1], "currency"} = "EUR";
+        $info{$q[1], "currency"} = $q[2];
         $info{$q[1], "success"}  = 1;
       }
     }
@@ -128,7 +128,8 @@ sub unionfunds
 
 sub unionurl
 {
-  return "https://www.union-investment.de/preise.csv";
+  return "file:///D:/Download/NEU/historische-preise.csv";
+ #   return "https://www.union-investment.de/preise.csv";
 }
 
 1;
